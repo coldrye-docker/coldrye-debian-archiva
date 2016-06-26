@@ -4,14 +4,14 @@ provider = coldrye
 os = debian
 release = testing
 feature = archiva
-feature_version = 2-2-x
+feature_version = 2-2-1
 tag := $(shell date +"%Y%m%d%H%M%S")
 image = $(os)-$(feature)
 
 .PHONY: build fetch-latest push
 
 build: fetch-latest
-	docker build -t $(provider)/$(image)\:$(feature_version)-$(release)-$(tag) .
+	tar -czh . | docker build -t $(provider)/$(image)\:$(feature_version)-$(release)-$(tag) -
 	docker tag $(provider)/$(image)\:$(feature_version)-$(release)-$(tag) $(provider)/$(image)\:$(feature_version)-$(release)-latest
 
 fetch-latest:

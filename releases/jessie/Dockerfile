@@ -4,16 +4,21 @@ MAINTAINER Carsten Klein <trancesilken@gmail.com>
 
 ARG ARCHIVA_VERSION=2.2.1
 
-ENV ARCHIVA_NAME=apache-archiva-${ARCHIVA_VERSION}
-
+ENV DEPLOY_DIR=/var/lib/jetty
+ENV ARCHIVA_STORE=/var/storages/archiva
 RUN set -x \
-    && export ARCHIVA_TMP=$(mktemp -d) \
-    && curl -fSl "http://www-eu.apache.org/dist/archiva/${ARCHIVA_VERSION}/binaries/${ARCHIVA_NAME}-bin.tar.gz" -o ${ARCHIVA_TMP}/${ARCHIVA_NAME}-bin.tar.gz \
-    && tar xzf ${ARCHIVA_TMP}/${ARCHIVA_NAME}-bin.tar.gz -C ${ARCHIVA_TMP}/ \
-    && mv /${ARCHIVA_TMP}/${ARCHIVA_NAME} /var/archiva \
-    && rm -Rf ${ARCHIVA_TMP}
+    && export ARCHIVA_NAME=apache-archiva-${ARCHIVA_VERSION} \
+    && curl -fSl "http://www-eu.apache.org/dist/archiva/${ARCHIVA_VERSION}/binaries/${ARCHIVA_NAME}.war" -o ${DEPLOY_DIR}/webapps/archiva.war \
+    && mkdir -p ${ARCHIVA_STORE} \
+    && mkdir ${ARCHIVA_STORE}/data \
+    && mkdir ${ARCHIVA_STORE}/conf \
+    && mkdir ${ARCHIVA_STORE}/temp \
+    && mkdir ${ARCHIVA_STORE}/repositories
+
+ADD ["./etc/default/jetty.extra", "/etc/default/"]
+ADD ["./conf/${ARCHIVA_VERSION}/archiva.xml", "${DEPLOY_DIR}/webapps/"]
+ADD ["./conf/${ARCHIVA_VERSION}/conf/*", "${ARCHIVA_STORE}/conf/"]
+ADD ["./lib/${ARCHIVA_VERSION}/*.jar", "${DEPLOY_DIR}/ext/"]
 
 EXPOSE 8080
-
-CMD ["/var/archiva/bin/archiva", "console"]
 

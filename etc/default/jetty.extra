@@ -1,0 +1,3 @@
+# Extra options to pass to the JVM
+JAVA_OPTIONS_EXTRA="-Dappserver.base=/var/storages/archiva -Dappserver.home=/var/storages/archiva"
+
