@@ -31,6 +31,7 @@ data/
 groups/
 logs/
 repositories/
+cacerts  // copy over the keystore from /usr/lib/jvm/.../jre/lib/security/cacerts
 ```
 
 After which the container can be created using
@@ -45,8 +46,6 @@ docker create -P -v ./archiva:/var/storages/archiva coldrye/debian-archiva:2-1-1
 - import remote repository certs into configured keystore
 openssl s_client -connect repo.maven.apache.org:443 -showcerts </dev/null 2>/dev/null|openssl x509 -outform der >repo-maven-apache-org.der
 keytool -importcert -storepass <secret> -alias repo-maven-apache-org -noprompt -trustcacerts -file /var/archiva/logs/repo-maven-apache-org.der
-
-http://stackoverflow.com/questions/5871279/java-ssl-and-cert-keystore
 
 - optional: extend apache/archiva to permit import of remote repository certificates into configured keystore via web interface or make a feature request
 
