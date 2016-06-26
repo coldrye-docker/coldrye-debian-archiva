@@ -1,12 +1,11 @@
-
 # coldrye-debian-archiva
 
-See https://hub.docker.com/r/coldrye/debian-archiva/ for more information.
+[![coldrye/debian-archiva](http://dockeri.co/image/coldrye/debian-archiva)](https://hub.docker.com/r/coldrye/debian-archiva/)
 
 
 ## Description
 
-This provides apache-archiva as a containerized service.
+This provides Apache Archiva as a containerized service based on coldrye/debian-jetty.
 
 
 ## Image Releases
@@ -19,19 +18,35 @@ Images are released for the following debian releases.
 See https://hub.docker.com/r/coldrye/debian-archiva/tags/ for a complete list.
 
 
+## Usage
+
+While you can use this as it is and have a working Apache Archiva installation, one might consider that
+existing data needs to be stored on a persistent volume.
+
+The persistent volume must be mounted inside the container on ``/var/storages/archiva`` and must have the following layout
+
+```
+conf/    // one must copy the configuration files from conf/<VERSION>/* on first installment
+data/
+groups/
+logs/
+repositories/
+```
+
+After which the container can be created using
+
+```
+docker create -P -v ./archiva:/var/storages/archiva coldrye/debian-archiva:2-1-1-<jessie|testing>-latest
+```
+
+
 ## TODO
 
-Currently just packages apache-archiva-bin and uses the bundled jetty.
-Need to deploy the war instead and use the jetty version that comes with
-the base image.
+- import remote repository certs into configured keystore
+openssl s_client -connect repo.maven.apache.org:443 -showcerts </dev/null 2>/dev/null|openssl x509 -outform der >repo-maven-apache-org.der
+keytool -importcert -storepass <secret> -alias repo-maven-apache-org -noprompt -trustcacerts -file /var/archiva/logs/repo-maven-apache-org.der
 
-Configuration:
+http://stackoverflow.com/questions/5871279/java-ssl-and-cert-keystore
 
-- repository storage / volume
-- default users
-- default repositories local / remote
-- import remote repository certs into keystore /etc/ssl/certs/java/cacerts
-    openssl s_client -connect repo.maven.apache.org:443 -showcerts </dev/null 2>/dev/null|openssl x509 -outform der >repo-maven-apache-org.der
-    keytool -importcert -storepass <secret> -alias repo-maven-apache-org -noprompt -trustcacerts -file /var/archiva/logs/repo-maven-apache-org.der
-- ...
+- optional: extend apache/archiva to permit import of remote repository certificates into configured keystore via web interface or make a feature request
 
