@@ -20,5 +20,7 @@ ADD ["./conf/${ARCHIVA_VERSION}/archiva.xml", "${DEPLOY_DIR}/webapps/"]
 ADD ["./conf/${ARCHIVA_VERSION}/conf/*", "${ARCHIVA_STORE}/conf/"]
 ADD ["./lib/${ARCHIVA_VERSION}/*.jar", "${DEPLOY_DIR}/ext/"]
 
+VOLUME ["/var/storages/maven"]
+
 EXPOSE 8080
 
