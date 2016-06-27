@@ -23,7 +23,7 @@ See https://hub.docker.com/r/coldrye/debian-archiva/tags/ for a complete list.
 While you can use this as it is and have a working Apache Archiva installation, one might consider that
 existing data needs to be stored on a persistent volume.
 
-The persistent volume must be mounted inside the container on ``/var/storages/archiva`` and must have the following layout
+The persistent volume must be mounted inside the container on ``/var/storages/maven`` and must have the following layout
 
 ```
 conf/    // one must copy the configuration files from conf/<VERSION>/* on first installment
@@ -37,15 +37,6 @@ cacerts  // copy over the keystore from /usr/lib/jvm/.../jre/lib/security/cacert
 After which the container can be created using
 
 ```
-docker create -P -v ./archiva:/var/storages/archiva coldrye/debian-archiva:2-1-1-<jessie|testing>-latest
+docker create -P -v ./maven:/var/storages/maven coldrye/debian-archiva:2-1-1-<jessie|testing>-latest
 ```
-
-
-## TODO
-
-- import remote repository certs into configured keystore
-openssl s_client -connect repo.maven.apache.org:443 -showcerts </dev/null 2>/dev/null|openssl x509 -outform der >repo-maven-apache-org.der
-keytool -importcert -storepass <secret> -alias repo-maven-apache-org -noprompt -trustcacerts -file /var/archiva/logs/repo-maven-apache-org.der
-
-- optional: extend apache/archiva to permit import of remote repository certificates into configured keystore via web interface or make a feature request
 

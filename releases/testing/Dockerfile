@@ -5,7 +5,7 @@ MAINTAINER Carsten Klein <trancesilken@gmail.com>
 ARG ARCHIVA_VERSION=2.2.1
 
 ENV DEPLOY_DIR=/var/lib/jetty
-ENV ARCHIVA_STORE=/var/storages/archiva
+ENV ARCHIVA_STORE=/var/storages/maven
 RUN set -x \
     && export ARCHIVA_NAME=apache-archiva-${ARCHIVA_VERSION} \
     && curl -fSl "http://www-eu.apache.org/dist/archiva/${ARCHIVA_VERSION}/binaries/${ARCHIVA_NAME}.war" -o ${DEPLOY_DIR}/webapps/archiva.war \

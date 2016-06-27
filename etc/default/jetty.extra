@@ -1,3 +1,4 @@
 # Extra options to pass to the JVM
-JAVA_OPTIONS_EXTRA="-Dappserver.base=/var/storages/archiva -Dappserver.home=/var/storages/archiva -Djavax.net.ssl.trustStore=/var/storages/archiva/cacerts"
+ARCHIVA_STORE=/var/storages/maven
+JAVA_OPTIONS_EXTRA="-Dappserver.base=$ARCHIVA_STORE -Dappserver.home=$ARCHIVA_STORE -Djavax.net.ssl.trustStore=$ARCHIVA_STORE/cacerts"
 
