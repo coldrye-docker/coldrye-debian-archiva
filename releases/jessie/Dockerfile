@@ -1,4 +1,4 @@
-FROM coldrye/debian-jetty:9-jessie-latest
+FROM coldrye/debian-jetty:9-3-9-jessie-latest
 
 MAINTAINER Carsten Klein <trancesilken@gmail.com>
 
@@ -15,7 +15,7 @@ RUN set -x \
     && mkdir ${ARCHIVA_STORE}/temp \
     && mkdir ${ARCHIVA_STORE}/repositories
 
-ADD ["./etc/default/jetty.extra", "/etc/default/"]
+ADD ["./etc/default/jetty", "/etc/default/"]
 ADD ["./conf/${ARCHIVA_VERSION}/archiva.xml", "${DEPLOY_DIR}/webapps/"]
 ADD ["./conf/${ARCHIVA_VERSION}/conf/*", "${ARCHIVA_STORE}/conf/"]
 ADD ["./lib/${ARCHIVA_VERSION}/*.jar", "${DEPLOY_DIR}/ext/"]
