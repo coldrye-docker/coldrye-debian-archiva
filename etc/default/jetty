@@ -17,6 +17,6 @@ JAVA_OPTIONS="-Xmx256m -Djava.awt.headless=true"
 #JETTY_ARGS=
 
 # archiva extensions
-ARCHIVA_STORE=/var/storages/maven
-JAVA_OPTIONS="$JAVA_OPTIONS -Dappserver.base=$ARCHIVA_STORE -Dappserver.home=$ARCHIVA_STORE -Djavax.net.ssl.trustStore=$ARCHIVA_STORE/cacerts"
+STORAGE_DIR=/var/storages/maven
+JAVA_OPTIONS="$JAVA_OPTIONS -Dappserver.base=$STORAGE_DIR -Dappserver.home=$STORAGE_DIR -Djavax.net.ssl.trustStore=$STORAGE_DIR/cacerts"
 

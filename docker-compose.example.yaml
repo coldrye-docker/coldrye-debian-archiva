@@ -1,0 +1,26 @@
+version: '2'
+services:
+  maven:
+    image: coldrye/debian-archiva:2-1-1-jessie-latest
+    volumes:
+      - /var/storages/maven:/var/storages/maven
+#   exposes:
+#     - "8080"
+#   ports:
+#     - "8080:8080"
+#
+# web:
+#   image: coldrye/debian-nginx:1-9-x-jessie-latest
+#   volumes:
+#     - /var/storages/nginx/reverse-proxy/maven.conf:/etc/nginx/sites-enabled/maven.conf
+#     - ...
+#   depends_on:
+#     - maven
+#     - ...
+#   links:
+#     - npm
+#     - ...
+#   exposes:
+#     - "80:80"
+#     - "443:443"
+

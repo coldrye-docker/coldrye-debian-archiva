@@ -1,0 +1,31 @@
+# vim: noexpandtab:ts=4:sw=4
+
+SHELL=/bin/bash
+
+.PHONY: build fetch-latest push
+
+build: fetch-latest
+	set -x; \
+	for version in $(feature_version); do \
+	  export relver=$${version//.[Mv]*/}; \
+	  export hrelver=$${relver//./-}; \
+	  export build_args="--build-arg FEATURE_VERSION=$$version --build-arg STORAGE_DIR=$(storage_dir) --build-arg DEPLOY_DIR=$(deploy_dir)"; \
+	  tar -czh . | docker build $$build_args -t $(provider)/$(image)\:$${hrelver}-$(release)-$(tag) - && \
+	  docker tag $(provider)/$(image)\:$${hrelver}-$(release)-$(tag) $(provider)/$(image)\:$${hrelver}-$(release)-latest; \
+	done
+
+fetch-latest:
+	for version in $(feature_version); do \
+	  export relver=$${version//.[Mv]*/}; \
+	  export hrelver=$${relver//./-}; \
+	  docker pull $(provider)/$(image):$${hrelver}-$(release)-latest || true; \
+	done
+
+push: build
+	for version in $(feature_version); do \
+	  export relver=$${version//.[Mv]*/}; \
+	  export hrelver=$${relver//./-}; \
+	  docker push $(provider)/$(image)\:$${hrelver}-$(release)-$(tag) && \
+	  docker push $(provider)/$(image)\:$${hrelver}-$(release)-latest; \
+	done
+
